@@ -1,0 +1,6 @@
+node_modules
+.next
+.env*
+!.env.example
+public/admin
+tina/__generated__
