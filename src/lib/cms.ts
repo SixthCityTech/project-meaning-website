@@ -9,14 +9,14 @@ async function read(path: string): Promise<unknown> {
   if (process.env.CMS_BASE_URL && process.env.CMS_BASE_URL !== origin) throw new Error('Unexpected CMS origin');
   if (process.env.CMS_BRAND_SLUG && process.env.CMS_BRAND_SLUG !== slug) throw new Error('Unexpected CMS brand');
   const headers: HeadersInit = { Accept: 'application/json' };
-  // The supplied memo says reader credentials can expose previews. Public pages
-  // deliberately use the public feed until preview isolation is verified.
+  // Server-only optional site-reader credential; never send preview parameters.
+  if(process.env.UTILIS_API_TOKEN) headers.Authorization = `Bearer ${process.env.UTILIS_API_TOKEN}`;
   const response = await fetch(`${origin}/api/v1/public/nextjs/sites/${slug}/articles${path}`, {headers, redirect:'error', next:{revalidate:60}, signal:AbortSignal.timeout(20000)});
   if (response.status === 404) return null;
   if (!response.ok) throw new Error(`CMS request failed (${response.status})`);
   return response.json();
 }
-const valid = (a: unknown): a is Article => { if (!a || typeof a !== 'object') return false; const x = a as Article; const date=typeof x.published_at==='string'?Date.parse(x.published_at):NaN; return typeof x.title === 'string' && typeof x.slug === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(x.slug) && x.status === 'published' && x.visibility === 'public' && Number.isFinite(date) && date<=Date.now() && (x.brand_id === slug || (Array.isArray(x.sites_to_appear) && x.sites_to_appear.some(site => site?.slug === slug))); };
+const valid = (a: unknown): a is Article => { if (!a || typeof a !== 'object') return false; const x = a as Article; const date=typeof x.published_at==='string'?Date.parse(x.published_at):NaN; return typeof x.title === 'string' && typeof x.slug === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(x.slug) && x.status === 'published' && x.visibility === 'public' && Number.isFinite(date) && date<=Date.now() && Array.isArray(x.sites_to_appear) && x.sites_to_appear.some(site => site?.slug === slug); };
 export const safeMedia=(value:unknown):string|null => {if(typeof value!=='string')return null;try{const u=new URL(value);return u.protocol==='https:'&&u.hostname==='cms.utiliscrm.com'&&u.pathname.startsWith('/uploads/')&&!u.username&&!u.password?u.href:null}catch{return null}};
 export const displayDate=(value?:string):string|null=>{if(!value||!Number.isFinite(Date.parse(value)))return null;return new Intl.DateTimeFormat('en-US',{dateStyle:'long',timeZone:'America/New_York'}).format(new Date(value))};
 export async function getArticles(): Promise<Article[]> { const result = await read(''); const data = result && typeof result === 'object' && 'data' in result ? (result as {data:unknown}).data : result; return Array.isArray(data) ? data.filter(valid) : []; }
