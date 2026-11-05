@@ -80,3 +80,6 @@
 
 .card-photo:has(.card-scene-image){background-image:none;overflow:hidden}.card-scene-image{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
 
+
+.hero-photo,.return-image{display:block;width:100%;object-fit:cover;object-position:center}.return-image{background-image:none}
+

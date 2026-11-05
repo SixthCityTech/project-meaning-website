@@ -17,7 +17,7 @@ function JourneyCard({brand,index}:{brand:typeof brands[number];index:number}){
       <span className="journey-card-inner">
         <span className="journey-face journey-front">
           <span className="journey-number">0{index+1}</span>
-          <span className="journey-brand"><img src={`/journey/${brand.logo}`} alt=""/><span className="journey-name">{brand.name}</span></span>
+          <span className="journey-brand"><img src={`/journey/${brand.logo}`} alt="" loading="lazy" decoding="async"/><span className="journey-name">{brand.name}</span></span>
           <span className="journey-stage">{brand.stage}</span>
         </span>
         <span className="journey-face journey-back">
