@@ -50,3 +50,30 @@
 .footer .footer-bottom p:nth-child(2){grid-column:2 / -1;text-align:right}
 @media(max-width:600px){.footer .footer-bottom p:nth-child(2){grid-column:1;text-align:right}}
 
+
+/* Journey cards: links navigate, the separate information button works on touch. */
+.journey-flip-card{height:340px;position:relative;perspective:1000px;border-radius:5px}
+.journey-card-link{display:block;width:100%;height:100%;border-radius:5px}
+.journey-card-link:focus-visible{outline:3px solid #7d7aaf;outline-offset:4px}
+.journey-card-inner{display:block;width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .45s ease}
+.journey-flip-card.is-flipped .journey-card-inner,.journey-card-link:focus-visible .journey-card-inner{transform:rotateY(180deg)}
+@media(hover:hover){.journey-flip-card:hover .journey-card-inner{transform:rotateY(180deg)}}
+.journey-face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;border-radius:5px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.journey-front{background:linear-gradient(145deg,#59567f,#49466c);color:#fff;padding:28px 18px 24px}
+.journey-front .journey-number{position:absolute;top:20px;left:22px;font-size:10px;letter-spacing:.12em;color:#dddced}
+.journey-front .journey-brand{display:flex;flex:1;width:100%;min-height:0;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px}
+.journey-front .journey-brand img{width:185px;height:185px;max-width:100%;object-fit:contain}
+.journey-flip-card:nth-child(2) .journey-brand img{width:265px}
+.journey-name{font:21px/1.1 Georgia,serif;letter-spacing:-.035em}
+.journey-stage{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;line-height:1.5}
+.journey-back{transform:rotateY(180deg);background:#dbddbc;color:#26314a;align-items:flex-start;text-align:left;padding:43px 24px 26px}
+.journey-back-eyebrow{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#555a3c;margin-bottom:14px}
+.journey-back-name{font:28px/1.12 Georgia,serif;letter-spacing:-.035em;margin-bottom:18px}
+.journey-summary{font-size:15px;line-height:1.55}
+.journey-visit{font-size:12px;font-weight:700;text-decoration:underline;text-underline-offset:4px;margin-top:auto}
+.journey-info{position:absolute;z-index:2;right:15px;top:15px;width:30px;height:30px;border:1px solid rgba(255,255,255,.8);border-radius:50%;background:transparent;color:#fff;cursor:pointer;font:700 15px/1 Georgia,serif}
+.journey-info:focus-visible{outline:3px solid #8c89bd;outline-offset:3px}
+.journey-flip-card.is-flipped .journey-info,.journey-card-link:focus-visible~.journey-info{color:#26314a;border-color:#565b48}
+@media(hover:hover){.journey-flip-card:hover .journey-info{color:#26314a;border-color:#565b48}}
+@media(max-width:700px){.journey-flip-card{height:320px}.journey-front{padding-top:24px}.journey-front .journey-brand img{width:175px;height:175px}.journey-flip-card:nth-child(2) .journey-brand img{width:250px}.journey-back{padding:40px 23px 23px}}
+@media(prefers-reduced-motion:reduce){.journey-card-inner{transition:none}}
