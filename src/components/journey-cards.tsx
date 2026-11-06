@@ -21,7 +21,7 @@ function JourneyCard({brand,index}:{brand:typeof brands[number];index:number}){
           <span className="journey-stage">{brand.stage}</span>
         </span>
         <span className="journey-face journey-back">
-          <span className="journey-back-eyebrow">{brand.stage}</span>
+          <span className="journey-back-eyebrow">{brand.stage.replace(/ It$/, " AI")}</span>
           <span className="journey-back-name">{brand.name}</span>
           <span className="journey-summary" id={descriptionId}>{brand.summary}</span>
           <span className="journey-visit">Visit website <span aria-hidden="true">↗</span></span>
