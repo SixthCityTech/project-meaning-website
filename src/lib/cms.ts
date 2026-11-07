@@ -2,7 +2,7 @@ import 'server-only';
 
 const origin = 'https://cms.utiliscrm.com';
 const slug = 'project-meaning';
-export type Article = { slug: string; title: string; subtitle?: string; dek?:string; summary?: string; status?: string; visibility?: string; brand_id?:string; sites_to_appear?:{slug?:string}[]; body_html?: string; body?:{type?:string}[]; answer_engine_summary?: string; canonical_url?: string; published_at?: string; updated_at?:string; publication_type?:string; seo_title?:string; meta_description?:string; key_takeaways?:string[]; topics?:string[]; author?: {name?: string;job_title?:string;photo_url?:string}; hero_media?:{url?:string;card_url?:string;alt?:string;caption?:string;credit?:string}; visible_faqs?: {question:string;answer:string;visible:boolean}[] };
+export type Article = { slug: string; title: string; thumbnail_url?:string; card_image_url?:string; subtitle?: string; dek?:string; summary?: string; status?: string; visibility?: string; brand_id?:string; sites_to_appear?:{slug?:string}[]; body_html?: string; body?:{type?:string}[]; answer_engine_summary?: string; canonical_url?: string; published_at?: string; updated_at?:string; publication_type?:string; seo_title?:string; meta_description?:string; key_takeaways?:string[]; topics?:string[]; author?: {name?: string;job_title?:string;photo_url?:string;photo_thumbnail_url?:string}; hero_media?:{url?:string;card_url?:string;thumbnail_url?:string;medium_url?:string;alt?:string;caption?:string;credit?:string}; visible_faqs?: {question:string;answer:string;visible:boolean}[] };
 
 async function read(path: string): Promise<unknown> {
   // Never allow a configured endpoint or redirect to exfiltrate the reader token.

@@ -86,3 +86,5 @@
 
 .logo img{display:block;width:235px;height:auto;max-height:84px;object-fit:contain}@media(max-width:700px){.logo img{width:210px;max-height:75px}}
 
+
+.editorial-card-image{height:auto;aspect-ratio:16/9}.story-hero-frame{aspect-ratio:16/9;max-height:440px;background:#ecebf0;border-radius:6px;overflow:hidden}.story-hero-frame picture,.story-hero-frame img{display:block;width:100%;height:100%}.story-hero-frame img{object-fit:contain}@media(max-width:600px){.story-hero-frame{max-height:280px}}

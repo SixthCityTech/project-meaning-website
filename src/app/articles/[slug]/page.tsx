@@ -13,7 +13,7 @@ function prepareBody(html:unknown):string|null {
   const tags=Array.from(html.matchAll(/<\s*\/?\s*([a-z][a-z0-9-]*)\b/gi),m=>m[1].toLowerCase());
   if(tags.some(t=>!supported.has(t)))return null;
   let badImage=false;
-  const clean=sanitizeHtml(html,{allowedTags:[...supported],allowedAttributes:{a:['href','title'],img:['src','alt','width','height','loading']},allowedSchemes:['https','http','mailto'],transformTags:{img:(_tag,attributes)=>{const src=safeMedia(attributes.src);if(!src)badImage=true;return {tagName:'img',attribs:{src:src||'',alt:attributes.alt||'',loading:'lazy'}}}}});
+  const clean=sanitizeHtml(html,{allowedTags:[...supported],allowedAttributes:{a:['href','title'],img:['src','alt','width','height','loading','decoding']},allowedSchemes:['https','http','mailto'],transformTags:{img:(_tag,attributes)=>{const src=safeMedia(attributes.src);if(!src)badImage=true;return {tagName:'img',attribs:{src:src||'',alt:attributes.alt||'',loading:'lazy',decoding:'async'}}}}});
   return badImage?null:clean;
 }
 
@@ -23,7 +23,7 @@ export default async function ArticlePage({params}:{params:Promise<{slug:string}
   if(!article)notFound();
   const body=prepareBody(article.body_html);
   if(!body)console.error(`Article body missing or includes unsupported content: ${slug}`);
-  const hero=safeMedia(article.hero_media?.url);const portrait=safeMedia(article.author?.photo_url);
+  const hero=safeMedia(article.hero_media?.url)||safeMedia(article.hero_media?.medium_url);const heroMedium=safeMedia(article.hero_media?.medium_url)||safeMedia(article.hero_media?.card_url);const portrait=safeMedia(article.author?.photo_thumbnail_url);
   const published=displayDate(article.published_at);const updated=displayDate(article.updated_at);
   const takeaways=Array.isArray(article.key_takeaways)?article.key_takeaways.filter((s):s is string=>typeof s==='string'&&!!s.trim()):[];
   const topics=Array.isArray(article.topics)?article.topics.filter((s):s is string=>typeof s==='string'&&!!s.trim()):[];
@@ -31,8 +31,8 @@ export default async function ArticlePage({params}:{params:Promise<{slug:string}
   return <article className="story wrap">
     <div className="story-breadcrumb"><Link href="/articles">Ideas & essays</Link><span aria-hidden="true"> / </span><span>{article.publication_type||'Article'}</span></div>
     <header className="story-header"><p className="eyebrow">{article.publication_type||'Article'}</p><h1>{article.title}</h1>{(article.dek||article.subtitle)&&<p className="story-deck">{article.dek||article.subtitle}</p>}</header>
-    {hero&&<figure className="story-hero"><img src={hero} alt={article.hero_media?.alt||''}/>{article.hero_media?.caption&&<figcaption>{article.hero_media.caption}{article.hero_media.credit?` · ${article.hero_media.credit}`:''}</figcaption>}</figure>}
-    <div className="story-layout"><div className="story-column"><div className="story-byline">{portrait&&<img src={portrait} alt=""/>}<div>{article.author?.name&&<strong>By {article.author.name}</strong>}{article.author?.job_title&&<span>{article.author.job_title}</span>}<span>{published&&<time dateTime={article.published_at}>{published}</time>}{updated&&updated!==published&&<> · Updated <time dateTime={article.updated_at}>{updated}</time></>}</span></div></div>
+    {hero&&<figure className="story-hero"><div className="story-hero-frame"><picture>{heroMedium&&<source media="(max-width: 700px)" srcSet={heroMedium}/>}<img src={hero} alt={article.hero_media?.alt||''} fetchPriority="high" decoding="async"/></picture></div>{article.hero_media?.caption&&<figcaption>{article.hero_media.caption}{article.hero_media.credit?` · ${article.hero_media.credit}`:''}</figcaption>}</figure>}
+    <div className="story-layout"><div className="story-column"><div className="story-byline">{portrait&&<img src={portrait} alt="" width="54" height="54" loading="lazy" decoding="async"/>}<div>{article.author?.name&&<strong>By {article.author.name}</strong>}{article.author?.job_title&&<span>{article.author.job_title}</span>}<span>{published&&<time dateTime={article.published_at}>{published}</time>}{updated&&updated!==published&&<> · Updated <time dateTime={article.updated_at}>{updated}</time></>}</span></div></div>
     {takeaways.length>0&&<section className="story-takeaways"><p className="eyebrow">At a glance</p><h2>Key takeaways</h2><ul>{takeaways.map((t,i)=><li key={i}>{t}</li>)}</ul></section>}
     {topics.length>0&&<div className="story-topics" aria-label="Topics">{topics.map(t=><span key={t}>{t}</span>)}</div>}
     {body?<div className="story-body" dangerouslySetInnerHTML={{__html:body}}/>:<section className="story-unavailable"><h2>Article content is temporarily unavailable.</h2><p>Please try again later.</p></section>}
