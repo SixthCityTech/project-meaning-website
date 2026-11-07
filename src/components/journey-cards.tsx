@@ -3,7 +3,7 @@
 import {useState} from 'react';
 
 const brands = [
-  {name:'humanAi Insight', stage:'Understand It', logo:'humanai-optimized.webp', href:'https://humanaiinsight.com', summary:'Explains AI developments and their practical effects on everyday work, business, and life.'},
+  {name:'humanAi Insight', stage:'Understand It', logo:'humanai-news-white-v2.webp', href:'https://humanaiinsight.com', summary:'Explains AI developments and their practical effects on everyday work, business, and life.'},
   {name:'Trophic Shift', stage:'Confront It', logo:'trophic-shift-optimized.webp', href:'https://dev.trophicshift.com', summary:'Tracks emerging AI capabilities, risks, and humanity’s potential displacement as the dominant intelligence.'},
   {name:'Us After AI', stage:'Live Through It', logo:'us-after-ai-optimized.webp', href:'https://usafterai.com', summary:'Explores how people preserve dignity, identity, relationships, and purpose through AI-driven disruption.'},
   {name:'Project Meaning', stage:'Adapt To It', logo:'project-meaning-v2.webp', href:'https://projectmeaning.com', summary:'Develops practical frameworks, guidance, and resources helping people and communities adapt meaningfully to AI.'},

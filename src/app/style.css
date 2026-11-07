@@ -88,3 +88,5 @@
 
 
 .editorial-card-image{height:auto;aspect-ratio:16/9}.story-hero-frame{aspect-ratio:16/9;max-height:440px;background:#ecebf0;border-radius:6px;overflow:hidden}.story-hero-frame picture,.story-hero-frame img{display:block;width:100%;height:100%}.story-hero-frame img{object-fit:contain}@media(max-width:600px){.story-hero-frame{max-height:280px}}
+
+.journey-flip-card:first-child .journey-brand img{width:265px}@media(max-width:700px){.journey-flip-card:first-child .journey-brand img{width:250px}}
